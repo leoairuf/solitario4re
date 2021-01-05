@@ -1,0 +1,31 @@
+Matrice/DataFrame per il tavolo da gioco.
+Per questioni di indice, asso = 0, due = 1 e così via.
+
+PREPARAZIONE TAVOLO
+1 Passo: crea mazzo (di default ordinato)
+2 Passo: mazzo.mischia
+3 Passo: mazzo.primacarta e la disponi dove serve (strategia.disponi) e così via.
+
+GIOCO (while giocatore.mazzettovuoto == false)
+1 Passo: mazzo.primacarta
+2 Passo: strategia.posizionacartaRIGA
+3 Passo: tavolodagioco.sostituiscicarta (if sostituisco un re, return stop. If stop == true, mazzo.primacarta). If seme == bastoni, posiziono nella riga dei bastoni.
+.
+.
+.
+n Passo: quando finisco le carte del mazzetto,fuori dal ciclo while giocatore.vintooperso. If vintooperso == true (hai vinto), contatore ++. 
+
+
+class strategia:
+	  
+	def disponi():
+	  
+	def posizionacartaRIGA():
+	  
+	  
+class giocatore:
+
+	def mazzettovuoto():
+
+	def vintooperso():
+		carte ordinate       (basta solo questo)
