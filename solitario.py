@@ -6,7 +6,7 @@ Created on Tue Jan  5 12:08:17 2021
 """
 import random
 import time
-
+import numpy as np
 
 class Carta:
     
@@ -14,26 +14,40 @@ class Carta:
         self.seme=seme
         self.valore=valore
         self.coperta=coperta
-        
+         
 class Mazzo:
     
-    def __init__(self,lista_carte):
+    def __init__(self,lista_carte=[]):
         self.lista_carte=lista_carte
+    
+    def genera_mazzo_ordinato(self):
+        semi = ['B', 'C', 'D', 'S']
+        for seme in semi:
+            for valore in range(1, 11, 1):
+                self.lista_carte.append(Carta(seme,valore))
         
     def mischia(self):
         random.shuffle(self.lista_carte)
     
+    
     def prima_carta(self):
+        if len(self.lista_carte)!=0:
+            prima_carta=self.lista_carte.pop(-1)
+        else:
+            prima_carta=None
+        
+        return prima_carta
+    
+     
+class TavoloDaGioco:
+    def __init__():
         pass
     
-        
 
-mazzo=Mazzo(lista_carte=[])
+mazzo=Mazzo()
+mazzo.genera_mazzo_ordinato()
 
-semi = ['B', 'C', 'D', 'S']
-for seme in semi:
-    for valore in range(1, 11, 1):
-        mazzo.lista_carte.append(Carta(seme,valore))
+
 
 #check se tutto sia in ordine
 # for carta in mazzo.lista_carte:
@@ -44,8 +58,16 @@ mazzo.mischia()
 
 #check se sia stato mischiato
 for carta in mazzo.lista_carte:
+  
     print(carta.seme, carta.valore)
-    time.sleep(1)
+    time.sleep(0.1)
+
+print('\n\n\n')
+
+while len(mazzo.lista_carte) != 0:
+    prima=mazzo.prima_carta()
+    print(prima.seme, prima.valore)
+    time.sleep(0.5)
 
 
 
