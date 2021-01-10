@@ -10,10 +10,10 @@ import numpy as np
 
 class Carta:
     
-    def __init__(self,seme,valore,re = False):
+    def __init__(self,seme,valore,coperta=True):
         self.seme = seme
         self.valore = valore
-        self.re = re 
+        self.coperta = coperta
          
 class Mazzo:
     
@@ -24,10 +24,7 @@ class Mazzo:
         semi = ['B', 'C', 'D', 'S']
         for seme in semi:
             for valore in range(1, 11, 1):
-                if valore == 10:
-                   self.lista_carte.append(Carta(seme,valore,True))
-                else:
-                   self.lista_carte.append(Carta(seme,valore)) 
+                self.lista_carte.append(Carta(seme,valore)) 
                 
         
     def mischia(self):
@@ -100,12 +97,12 @@ class TavoloDaGioco:
         if carta_in.valore != 10:
            riga = righe[carta_in.seme]
            carta_out = self.tavolo[riga][carta_in.valore - 1]
+           carta_in.coperta=False
            self.tavolo[riga][carta_in.valore - 1] = carta_in
            return carta_out
+       
         else:
-           mazzo.lista_carte.remove(carta_in)
-           carta_out = mazzo.prima_carta() 
-           return carta_out
+           return mazzo.prima_carta()
        
 
     
@@ -151,6 +148,17 @@ while (Giocatore.mazzetto_vuoto(mazzo) == False):
 #     time.sleep(0.5)
 
 
+#stampo il tavolo a gioco cncluso
 
+print('  \n\n  Se False la carta è scoperta \n') 
+cont=0
+for riga in tavolo.tavolo:
+    print(f'\n  riga {cont}')
+    cont+=1
+    for carta in riga:
+        print(carta.valore,carta.seme,carta.coperta)
+        
+        
+    
         
    
