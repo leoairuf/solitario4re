@@ -10,10 +10,10 @@ import numpy as np
 
 class Carta:
     
-    def __init__(self,seme,valore,coperta=True):
-        self.seme=seme
-        self.valore=valore
-        self.coperta=coperta
+    def __init__(self,seme,valore,re = False):
+        self.seme = seme
+        self.valore = valore
+        self.re = re 
          
 class Mazzo:
     
@@ -24,7 +24,10 @@ class Mazzo:
         semi = ['B', 'C', 'D', 'S']
         for seme in semi:
             for valore in range(1, 11, 1):
-                self.lista_carte.append(Carta(seme,valore))
+                if valore == 10:
+                   self.lista_carte.append(Carta(seme,valore,True))
+                else:
+                   self.lista_carte.append(Carta(seme,valore)) 
                 
         
     def mischia(self):
@@ -54,11 +57,20 @@ class Strategia:
                 riga.append(carta)
             tavolo.append(riga)
     
-    def controlla_riga(carta):
-        pass
+    def stabilisci_seme_per_riga():
+        semi = ['B', 'C', 'D', 'S']
+        indici = list(range(4))
+        righe = {}
         
-        
-        
+        for seme in semi:
+            length = len(indici)
+            r = random.randrange(length)
+            righe[seme] = indici[r]
+            indici.pop(r)
+            
+        return righe    
+            
+    
                 
             
 class Giocatore:
@@ -69,8 +81,12 @@ class Giocatore:
         #controlla ordinamento carte
         pass
     
-    def mazzetto_vuoto():
-        pass
+    def mazzetto_vuoto(mazzo):
+        if len(mazzo.lista_carte) != 0:
+           return False
+        else:
+           return True 
+   
         
         
         
@@ -79,11 +95,18 @@ class TavoloDaGioco:
         self.tavolo=tavolo
         
     
-    def sostituisci_carta(self,mazzo,tavolo):
-        carta=mazzo.prima_carta()
-        riga=controlla_riga(carta)
-        tavolo[carta.valore-1][riga]
-        pass
+    def sostituisci_carta(self,carta_in,mazzo,tavolo,righe):
+        
+        if carta_in.valore != 10:
+           riga = righe[carta_in.seme]
+           carta_out = self.tavolo[riga][carta_in.valore - 1]
+           self.tavolo[riga][carta_in.valore - 1] = carta_in
+           return carta_out
+        else:
+           mazzo.lista_carte.remove(carta_in)
+           carta_out = mazzo.prima_carta() 
+           return carta_out
+       
 
     
     
@@ -106,10 +129,17 @@ mazzo.mischia()
 
 tavolo=TavoloDaGioco()
 Strategia.disponi_carte(mazzo,tavolo.tavolo)
-
+righe = Strategia.stabilisci_seme_per_riga()
 #check se sia stato mischiato
 # for carta in mazzo.lista_carte:
-  
+carta_in = mazzo.prima_carta()    
+while (Giocatore.mazzetto_vuoto(mazzo) == False):
+    carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
+     
+          
+       
+    
+    
 #     print(carta.seme, carta.valore)
 #     time.sleep(0.1)
 
