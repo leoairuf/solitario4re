@@ -7,6 +7,8 @@ Created on Tue Jan  5 12:08:17 2021
 import random
 import time
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 class Carta:
     
@@ -86,10 +88,10 @@ class Giocatore:
         
     
     def mazzetto_vuoto(mazzo):
-        if len(mazzo.lista_carte) != 0:
-           return False
+        if len(mazzo.lista_carte) == 0:
+           return True
         else:
-           return True 
+           return False 
    
         
         
@@ -114,25 +116,40 @@ class TavoloDaGioco:
 
     
 start = time.perf_counter()    
-giocatore = Giocatore()  
+
+numero_partite=100
+probabilità_vittoria=[]
+
+for j in range(100):
+    partite_vinte = 0 
     
-partite_vinte = 0 
+    
+    for _ in range(numero_partite):
+        
+        giocatore = Giocatore()  
+            
+        mazzo=Mazzo()  
+        mazzo.genera_mazzo_ordinato()
+        mazzo.mischia()
+        tavolo=TavoloDaGioco(tavolo=[])
+    
+        Strategia.disponi_carte(mazzo,tavolo.tavolo)
+        righe = Strategia.stabilisci_seme_per_riga()
+        carta_in = mazzo.prima_carta()    
+        while len(mazzo.lista_carte) != 0:
+            
+            carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
+              
+         
+        if (giocatore.vinto(tavolo, righe) == True):
+           partite_vinte += 1    
 
-mazzo=Mazzo()  
-mazzo.genera_mazzo_ordinato()
-mazzo.mischia()
-tavolo=TavoloDaGioco()
-Strategia.disponi_carte(mazzo,tavolo.tavolo)
-righe = Strategia.stabilisci_seme_per_riga()
-carta_in = mazzo.prima_carta()    
-while (Giocatore.mazzetto_vuoto(mazzo) == False):
-      carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
-      
- 
-if (giocatore.vinto(tavolo, righe) == True):
-   partite_vinte += 1    
+    numero_partite+=50
+    
+    probabilità_vittoria.append(partite_vinte/numero_partite)
+    
 
-
+plt.plot(probabilità_vittoria)
     
     #     print(carta.seme, carta.valore)
     #     time.sleep(0.1)
@@ -147,11 +164,12 @@ if (giocatore.vinto(tavolo, righe) == True):
     
     #stampo il tavolo a gioco cncluso
     
-print('  \n\n  Se False la carta è scoperta \n') 
-cont=0
-for riga in tavolo.tavolo:
-    print(f'\n  riga {cont}')
-    cont+=1
-    for carta in riga:
-        print(carta.valore,carta.seme,carta.coperta)
+    # print('  \n\n  Se False la carta è scoperta \n') 
+    # cont=0
+    # for riga in tavolo.tavolo:
+    #     print(f'\n  riga {cont}')
+    #     cont+=1
+    #     for carta in riga:
+    #         print(carta.valore,carta.seme,carta.coperta)
+            
 elapsed = time.perf_counter() - start       
