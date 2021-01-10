@@ -71,12 +71,19 @@ class Strategia:
                 
             
 class Giocatore:
-    def __init__():
-        pass
     
-    def vittoria():
-        #controlla ordinamento carte
-        pass
+    def __init__(self, vittoria = True):
+        self.vittoria = vittoria
+    
+    def vinto(self, tavolo, righe):
+        for k, riga in enumerate(tavolo.tavolo):
+            for i, carta in enumerate(riga):
+                if k != righe[carta.seme] or carta.valore != i + 1 :
+                    self.vittoria = False
+                    
+        return self.vittoria            
+                
+        
     
     def mazzetto_vuoto(mazzo):
         if len(mazzo.lista_carte) != 0:
@@ -106,50 +113,40 @@ class TavoloDaGioco:
        
 
     
+start = time.perf_counter()    
+giocatore = Giocatore()  
     
-    
-    
-    
-    
+partite_vinte = 0 
 
-mazzo=Mazzo()
+mazzo=Mazzo()  
 mazzo.genera_mazzo_ordinato()
-
-
-
-#check se tutto sia in ordine
-# for carta in mazzo.lista_carte:
-#     print(carta.seme, carta.valore)
-#     time.sleep(1)
-        
 mazzo.mischia()
-
 tavolo=TavoloDaGioco()
 Strategia.disponi_carte(mazzo,tavolo.tavolo)
 righe = Strategia.stabilisci_seme_per_riga()
-#check se sia stato mischiato
-# for carta in mazzo.lista_carte:
 carta_in = mazzo.prima_carta()    
 while (Giocatore.mazzetto_vuoto(mazzo) == False):
-    carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
-     
-          
-       
+      carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
+      
+ 
+if (giocatore.vinto(tavolo, righe) == True):
+   partite_vinte += 1    
+
+
+    
+    #     print(carta.seme, carta.valore)
+    #     time.sleep(0.1)
+    
+    # print('\n\n\n')
+    
+    # while len(mazzo.lista_carte) != 0:
+    #     prima=mazzo.prima_carta()
+    #     print(prima.seme, prima.valore)
+    #     time.sleep(0.5)
     
     
-#     print(carta.seme, carta.valore)
-#     time.sleep(0.1)
-
-# print('\n\n\n')
-
-# while len(mazzo.lista_carte) != 0:
-#     prima=mazzo.prima_carta()
-#     print(prima.seme, prima.valore)
-#     time.sleep(0.5)
-
-
-#stampo il tavolo a gioco cncluso
-
+    #stampo il tavolo a gioco cncluso
+    
 print('  \n\n  Se False la carta è scoperta \n') 
 cont=0
 for riga in tavolo.tavolo:
@@ -157,8 +154,4 @@ for riga in tavolo.tavolo:
     cont+=1
     for carta in riga:
         print(carta.valore,carta.seme,carta.coperta)
-        
-        
-    
-        
-   
+elapsed = time.perf_counter() - start       
