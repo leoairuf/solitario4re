@@ -8,6 +8,8 @@ import random
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from tqdm import tqdm
 
 
 class Carta:
@@ -120,10 +122,8 @@ start = time.perf_counter()
 numero_partite=100
 probabilità_vittoria=[]
 
-for j in range(100):
+for j in tqdm(range(200)):
     partite_vinte = 0 
-    
-    
     for _ in range(numero_partite):
         
         giocatore = Giocatore()  
@@ -144,32 +144,11 @@ for j in range(100):
         if (giocatore.vinto(tavolo, righe) == True):
            partite_vinte += 1    
 
-    numero_partite+=50
+    numero_partite += 50
     
     probabilità_vittoria.append(partite_vinte/numero_partite)
     
 
 plt.plot(probabilità_vittoria)
-    
-    #     print(carta.seme, carta.valore)
-    #     time.sleep(0.1)
-    
-    # print('\n\n\n')
-    
-    # while len(mazzo.lista_carte) != 0:
-    #     prima=mazzo.prima_carta()
-    #     print(prima.seme, prima.valore)
-    #     time.sleep(0.5)
-    
-    
-    #stampo il tavolo a gioco cncluso
-    
-    # print('  \n\n  Se False la carta è scoperta \n') 
-    # cont=0
-    # for riga in tavolo.tavolo:
-    #     print(f'\n  riga {cont}')
-    #     cont+=1
-    #     for carta in riga:
-    #         print(carta.valore,carta.seme,carta.coperta)
-            
+
 elapsed = time.perf_counter() - start       
