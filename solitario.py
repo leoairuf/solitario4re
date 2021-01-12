@@ -13,15 +13,58 @@ import statistics
 
 class Carta:
     
-    def __init__(self,seme,valore,coperta=True):
+    def __init__(self,seme=None,valore=None,coperta=True):
         self.seme = seme
         self.valore = valore
         self.coperta = coperta
+        
+    def is_carta(self,elem):
+        flag=False
+        if ',' in elem:
+            elem=elem.strip().split(',')
+            if len(elem)==2 and elem[1] in 'BSDC' and elem[0].isnumeric():
+                if int(elem[0]) > 0  and int(elem[0]) <= 10:
+                    self.seme=elem[1]
+                    self.valore=elem[0]
+                    flag=True
+                    
+        return flag
          
 class Mazzo:
     
     def __init__(self,lista_carte=[]):
         self.lista_carte=lista_carte
+        
+    def carica_mazzo(self,path):
+        #mazzo_temp={}
+        with open(path,'r') as infile:
+            contenuto=infile.readlines()
+            mazzo_temp=[]
+            for elem in contenuto:
+                carta=Carta()
+                
+                if carta.is_carta(elem) == True:
+                    flag=True
+                    for i in mazzo.lista_carte:
+                        if i.valore == carta.valore and i.seme==carta.seme:
+                            flag=False
+                        
+                    if flag==True:
+                        self.lista_carte.append(carta)#Carta(elem[1],elem[0])) 
+                        
+            if len(mazzo.lista_carte) != 40:
+                print('il mazzo non è completo')
+                return False
+            else:
+                return True
+            
+        
+                              
+                    
+                            
+                
+            
+            
     
     def genera_mazzo_ordinato(self):
         semi = ['B', 'C', 'D', 'S']
@@ -118,6 +161,15 @@ class TavoloDaGioco:
     
 start = time.perf_counter()    
 
+mazzo=Mazzo()
+
+mazzo.carica_mazzo("C:\\Users\\leona\\OneDrive\\Documenti\\pyprogram\\mazzo_test.txt")
+
+for carta in mazzo.lista_carte:
+    print(carta.valore,carta.seme)
+
+
+'''
 numero_partite=100
 probabilità_vittoria=[]
 
@@ -159,14 +211,14 @@ plt.plot(probabilità_vittoria)
     #     time.sleep(0.1)
     
     # print('\n\n\n')
+    '''
+# while len(mazzo.lista_carte) != 0:
+#     prima=mazzo.prima_carta()
+#     print(prima.seme, prima.valore)
+#     time.sleep(0.5)
     
-    # while len(mazzo.lista_carte) != 0:
-    #     prima=mazzo.prima_carta()
-    #     print(prima.seme, prima.valore)
-    #     time.sleep(0.5)
     
-    
-    #stampo il tavolo a gioco cncluso
+  #  stampo il tavolo a gioco cncluso
     
     # print('  \n\n  Se False la carta è scoperta \n') 
     # cont=0
