@@ -124,6 +124,29 @@ class TavoloDaGioco:
            return mazzo.prima_carta()
        
 
+
+
+def salva_mazzo_txt_csv(mazzo, num_partita, esito, dir_txt_path):
+    
+    with open(dir_txt_path + f'/mazzo{num_partita}_{esito}.txt', 'w+') as outfile:
+        for carta in mazzo.lista_carte:
+            line = str(carta.valore) + ',' + carta.seme + '\n'
+            outfile.writelines(line)
+
+
+
+            
+def crea_directories(args, dir_obj_path, dir_txt_path):   
+    
+    if not os.path.exists(args.test): 
+       os.makedirs(args.test)      
+    
+    if not os.path.exists(dir_obj_path):
+        os.makedirs(dir_obj_path) 
+    if not os.path.exists(dir_txt_path):
+        os.makedirs(dir_txt_path)         
+ 
+           
 #=========================================================================================================================#
 
 
@@ -137,11 +160,12 @@ args = parser.parse_args()
 
 start = time.perf_counter()    
 
-#creo la directory se non esiste  
-if not os.path.exists(args.test): 
-         os.makedirs(args.test)    
+dir_obj_path = args.test + 'Object_Test_Files'
+dir_txt_path = args.test + 'Text_Test_Files'
 
-    
+#creo la directory e le sub-directories se non esistono  
+crea_directories(args, dir_obj_path, dir_txt_path) 
+         
 p_vinte = 0
 p_perse = 0    
 numero_partite_da_giocare = 500
@@ -173,24 +197,28 @@ for _ in tqdm(range(numero_partite_da_giocare)):
     #voglio avere a disposizione 3 casi di test perdenti e 3 casi di test vincenti
     if (giocatore.vinto(tavolo, righe) != True):
         if p_perse < 3:
-            p_perse += 1 
-            with open(args.test + f'mazzo{p_perse}_sconfitta', 'wb') as mazzo_di_test_sconfitto:
+            p_perse += 1
+            esito = 'sconfitta'
+            salva_mazzo_txt_csv(mazzo_temp, p_perse, esito, dir_txt_path)
+            with open(dir_obj_path + f'/mazzo{p_perse}_{esito}', 'wb') as mazzo_di_test_sconfitto:
                 pickle.dump(mazzo_temp, mazzo_di_test_sconfitto)
-            with open(args.test + f'righe{p_perse}_sconfitta.json', 'w') as outfile:
+            with open(args.test + f'righe{p_perse}_{esito}.json', 'w') as outfile:
                 json.dump(righe_temp, outfile)    
     else:
         if p_vinte < 3:
             p_vinte += 1
-            with open(args.test + f'mazzo{p_vinte}_vittoria', 'wb') as mazzo_di_test_vinto:
+            esito = 'vittoria'
+            salva_mazzo_txt_csv(mazzo_temp, p_vinte, esito, dir_txt_path)
+            with open(dir_obj_path + f'/mazzo{p_vinte}_{esito}', 'wb') as mazzo_di_test_vinto:
                 pickle.dump(mazzo_temp, mazzo_di_test_vinto)
-            with open(args.test + f'righe{p_vinte}_vittoria.json', 'w') as outfile:
+            with open(args.test + f'righe{p_vinte}_{esito}.json', 'w') as outfile:
                 json.dump(righe_temp, outfile)     
 
 
 #verifico che i mazzi siano stati correttamente salvati/importati
 for i in range(1,4,1):
     
-    load_test_path = args.test + f'mazzo{i}_vittoria'    #analogo per sconfitta
+    load_test_path = dir_obj_path + f'/mazzo{i}_vittoria'    #analogo per sconfitta
     combination_test_path = args.test + f'righe{i}_vittoria.json'   
     
     mazzo_importato_di_prova = Mazzo()
