@@ -8,6 +8,7 @@ import random
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import statistics
 
 
 class Carta:
@@ -144,9 +145,12 @@ for j in range(100):
         if (giocatore.vinto(tavolo, righe) == True):
            partite_vinte += 1    
 
-    numero_partite+=200
+    numero_partite+=100
     
     probabilità_vittoria.append(partite_vinte/numero_partite)
+    
+
+media_probabilità=statistics.mean(probabilità_vittoria)
     
 
 plt.plot(probabilità_vittoria)
