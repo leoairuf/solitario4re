@@ -76,7 +76,19 @@ class Strategia:
             righe[seme] = indici[r]
             indici.pop(r)
             
-        return righe    
+        return righe   
+    
+    
+    def seme_prefissato():
+        semi = ['B', 'C', 'D', 'S']
+        indice = 0
+        righe = {}
+        
+        for seme in semi:
+            righe[seme]=indice
+            indice += 1
+            
+        return righe
             
     
                 
@@ -154,7 +166,7 @@ def crea_directories(args, dir_obj_path, dir_txt_path):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-i1", "--test", help = "Directory dei Casi di Test",
-                type = str, default = "./Test_Cases/")
+                type = str, default = "./Custom_Test_Cases/")
 
 args = parser.parse_args()
 
@@ -170,7 +182,7 @@ p_vinte = 0
 p_perse = 0    
 numero_partite_da_giocare = 500
 
-#ciclo di generazione dei mazzi    
+# ciclo di generazione dei mazzi    
 for _ in tqdm(range(numero_partite_da_giocare)):
 
     giocatore = Giocatore() 
@@ -250,6 +262,6 @@ for i in range(1,4,1):
     print(giocatore.vinto(tavolo, righe))
     print('Abbiamo importato correttamente una partita vincente!')
     
-    time.sleep(5)
+    time.sleep(60)
         
 elapsed = time.perf_counter() - start       
