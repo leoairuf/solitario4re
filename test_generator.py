@@ -262,6 +262,6 @@ for i in range(1,4,1):
     print(giocatore.vinto(tavolo, righe))
     print('Abbiamo importato correttamente una partita vincente!')
     
-    time.sleep(60)
+    #time.sleep(60)
         
 elapsed = time.perf_counter() - start       
