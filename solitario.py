@@ -62,7 +62,7 @@ class Mazzo:
                 carta=Carta()
                 
                 #check se la riga può diventare una carta
-                if carta.is_carta(elem) == True:
+                if carta.is_carta(elem):
                     flag=True
                     for i in self.lista_carte:
                         if i.valore == carta.valore and i.seme==carta.seme:
@@ -113,10 +113,8 @@ class Mazzo:
         
         '''Vengono controllate le carte ancora presenti nel mazzetto.'''
         
-        if len(self.lista_carte) == 0:
-           return True
-        else:
-           return False 
+        return len(self.lista_carte) == 0
+        
     
 #------------------------------------------------------------------------------------------------------------------------#    
      
@@ -304,7 +302,7 @@ def gioca_partita(args):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-i1", "--modalità", help = "Modalità di esecuzione",
-                type = str, default = 'Partita Singola')
+                type = str, default = 'Partita Singol')
 
 parser.add_argument("-i2", "--test", help = "Directory dei Casi di Test",
                 type = str, default = "./Custom_Test_Cases/")
