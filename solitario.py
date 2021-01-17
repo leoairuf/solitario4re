@@ -12,6 +12,8 @@ import statistics
 import argparse
 import json
 from tqdm import tqdm
+from icecream import ic
+from sys import exit
 
 #------------------------------------------------------------------------------------------------------------------------#
 
@@ -109,6 +111,7 @@ class Mazzo:
         
         return prima_carta
     
+    
     def vuoto(self):
         
         '''Vengono controllate le carte ancora presenti nel mazzetto.'''
@@ -122,18 +125,6 @@ class Strategia:
     
     def __init__():
         pass
-    
-    
-    def disponi_carte(mazzo,tavolo):
-        
-        '''Vengono disposte le carte sul tavolo per righe di 9.'''
-        
-        for i in range(4):
-            riga=[]
-            for j in range(9):
-                carta=mazzo.prima_carta()
-                riga.append(carta)
-            tavolo.append(riga)
     
     
     def stabilisci_seme_per_riga():
@@ -194,11 +185,11 @@ class Giocatore:
 class TavoloDaGioco:
     
     
-    def __init__(self,tavolo=[]):
+    def __init__(self, tavolo=[]):
         self.tavolo=tavolo
         
     
-    def sostituisci_carta(self,carta_in,mazzo,tavolo,righe):
+    def sostituisci_carta(self, carta_in, mazzo, tavolo, righe):
         
         '''Viene presa una carta in entrata, posizionata nello slot in base al suo seme e valore e successivamente
            viene prelevata la carta che era presente nello slot. La carta prelevata diventa così la nuova carta da
@@ -213,12 +204,24 @@ class TavoloDaGioco:
         #se ho un dieci, prendo direttamente un'altra carta dal mazzetto        
         else:
            return mazzo.prima_carta()
-
+       
+    
+    def disponi_carte(self, mazzo):
         
+        '''Vengono disposte le carte sul tavolo per righe di 9.'''
+        
+        for i in range(4):
+            riga=[]
+            for j in range(9):
+                carta=mazzo.prima_carta()
+                riga.append(carta)
+            self.tavolo.append(riga)
+
+#------------------------------------------------------------------------------------------------------------------------#        
 
 def calcola_probabilità_vittoria(numero_partite):
     partite_vinte = 0 
-    for _ in range(numero_partite):
+    for _ in tqdm(range(numero_partite)):
         
         #definisco la classe giocatore, mazzo (che viene anche mischiato), tavolo
         giocatore = Giocatore()  
@@ -230,12 +233,12 @@ def calcola_probabilità_vittoria(numero_partite):
         tavolo=TavoloDaGioco(tavolo=[])
     
         #sistemo le carte sul tavolo e genero le corrispondenze riga-seme
-        Strategia.disponi_carte(mazzo,tavolo.tavolo)
+        tavolo.disponi_carte(mazzo)
         righe = Strategia.stabilisci_seme_per_riga()
         
         #inizio a giocare
         carta_in = mazzo.prima_carta()    
-        while mazzo.vuoto() != True:
+        while not mazzo.vuoto():
             carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
         
         #controllo se ho vinto o perso, e aumento il contatore di conseguenza    
@@ -248,16 +251,18 @@ def calcola_probabilità_vittoria(numero_partite):
 def gioca_partita(args):
     
     #definisco i path da utilizzare per l'importazione di un mazzo singolo
-    load_test_path = args.test + 'Text_Test_Files/mazzo1_vittoria.txt'    
+    load_test_path = args.test + 'Text_Test_Files/mazzo1_sbagliato.txt'    
     combination_test_path = args.test + '/righe1_vittoria.json'  
     #a="C:/Users/leona/OneDrive/Documenti/pyprogram/solitario4re/Custom_Test_Cases/Text_Test_Files/mazzo1_vittoria.txt"
-    partita_vinta=False
+    partita_vinta = False
     
     mazzo = Mazzo()
     
     #importo il mazzo dal file di testo
-    mazzo.carica_mazzo(load_test_path)
-    '''Per Leonardo: Dobbiamo mettere un Controllo, se il mazzo non è valido non possiamo giocare'''
+    if not mazzo.carica_mazzo(load_test_path):
+       print('\nNon posso giocare con un mazzo non valido')
+       exit()
+    
     
     # with open(load_test_path, 'rb') as apri_mazzo_di_test:
     #     mazzo_importato_di_prova = pickle.load(apri_mazzo_di_test)
@@ -266,17 +271,17 @@ def gioca_partita(args):
     
     tavolo = TavoloDaGioco(tavolo=[]) 
     
-    Strategia.disponi_carte(mazzo, tavolo.tavolo) 
+    tavolo.disponi_carte(mazzo) 
     
     #importo la combinazione vincente
     with open(combination_test_path, 'r') as combinazioni_delle_righe:
         righe = json.load(combinazioni_delle_righe)
     
     carta_in = mazzo.prima_carta()    
-    while mazzo.vuoto() != True:
+    while not mazzo.vuoto():
         carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)    
         
-    if (giocatore.vinto(tavolo, righe) == True):
+    if giocatore.vinto(tavolo, righe):
         partita_vinta = True
         print('partita vinta !!')
     else:
@@ -285,7 +290,7 @@ def gioca_partita(args):
         
     #stampo la configurazione del tavolo per il controllo dell'utente   
     print('\nconfigurazione tavolo a partita conclusa: ')
-    cont=0
+    cont=1
     for riga in tavolo.tavolo:
         print(f'\n  riga {cont}')
         cont+=1
@@ -294,21 +299,18 @@ def gioca_partita(args):
     
     return partita_vinta
     
-    
-    
 #========================================================================================================================#    
 
 #dichiarazione degli arguments
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-i1", "--modalità", help = "Modalità di esecuzione",
-                type = str, default = 'Partita Singol')
+                type = str, default = 'Partita Singola')
 
 parser.add_argument("-i2", "--test", help = "Directory dei Casi di Test",
                 type = str, default = "./Custom_Test_Cases/")
 
 args = parser.parse_args()
-
 
 
 #start del contatore prestazionale
@@ -319,16 +321,23 @@ start = time.perf_counter()
 if args.modalità != 'Partita Singola':
    
     numero_partite = 100000
-    partite_vinte=calcola_probabilità_vittoria(numero_partite)
-    #calcolo la probabilità di vittoria per il ciclo i-esimo e metto in una lista
+    
+    partite_vinte = calcola_probabilità_vittoria(numero_partite)
+    #calcolo la probabilità di vittoria
     probabilità_vittoria=partite_vinte/numero_partite
-    print('partite giocate:  ',numero_partite)
-    print('\npartite vinte:  ',partite_vinte)
-    print('\nprobabilità vittoria:  ',probabilità_vittoria)
+    
+    print('\n\nPartite Giocate:', numero_partite)
+    print('\nPartite Vinte:  ',partite_vinte)
+    print('\nProbabilità Vittoria:  ',probabilità_vittoria)
+    
     #grafico l'andamento della probabilità    
     #plt.plot(probabilità_vittoria) 
     
 else:
+    
     vittoria=gioca_partita(args)
+
     
 elapsed = time.perf_counter() - start       
+
+print('\nTempo di Esecuzione:  ', elapsed)
