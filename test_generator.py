@@ -202,7 +202,7 @@ for _ in tqdm(range(numero_partite_da_giocare)):
     righe_temp = copy.deepcopy(righe)
     
     carta_in = mazzo.prima_carta()    
-    while Giocatore.mazzetto_vuoto(mazzo) != True:
+    while not carta_in == None:
         carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
     
 
@@ -230,8 +230,8 @@ for _ in tqdm(range(numero_partite_da_giocare)):
 #verifico che i mazzi siano stati correttamente salvati/importati
 for i in range(1,4,1):
     
-    load_test_path = dir_obj_path + f'/mazzo{i}_vittoria'    #analogo per sconfitta
-    combination_test_path = args.test + f'righe{i}_vittoria.json'   
+    load_test_path = dir_obj_path + f'/mazzo{i}_sconfitta'    #analogo per sconfitta
+    combination_test_path = args.test + f'righe{i}_sconfitta.json'   
     
     mazzo_importato_di_prova = Mazzo()
     
@@ -249,7 +249,7 @@ for i in range(1,4,1):
     
     
     carta_in = mazzo_importato_di_prova.prima_carta()    
-    while Giocatore.mazzetto_vuoto(mazzo_importato_di_prova) != True:
+    while not carta_in == None:
         carta_in = tavolo.sostituisci_carta(carta_in, mazzo_importato_di_prova, tavolo, righe)    
      
     cont=0
@@ -259,9 +259,11 @@ for i in range(1,4,1):
         for carta in riga:
             print(carta.valore,carta.seme,carta.coperta)
     
-    print(giocatore.vinto(tavolo, righe))
-    print('Abbiamo importato correttamente una partita vincente!')
-    
-    #time.sleep(60)
+    print('\n', giocatore.vinto(tavolo, righe))
+    if giocatore.vinto(tavolo, righe):
+       print('Abbiamo importato correttamente una partita vincente!')
+    else:
+       print('Abbiamo importato correttamente una partita perdente!') 
+
         
 elapsed = time.perf_counter() - start       

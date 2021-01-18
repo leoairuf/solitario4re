@@ -2,18 +2,17 @@
 """
 Created on Tue Jan  5 12:08:17 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
+
 import random
 import time
-import numpy as np
 import matplotlib.pyplot as plt
-import statistics
 import argparse
 import json
 from tqdm import tqdm
-from icecream import ic
 from sys import exit
+from abc import ABC, abstractmethod
 
 #------------------------------------------------------------------------------------------------------------------------#
 
@@ -221,7 +220,7 @@ class TavoloDaGioco:
 
 def calcola_probabilità_vittoria(numero_partite):
     partite_vinte = 0 
-    for _ in tqdm(range(numero_partite)):
+    for partita in tqdm(range(numero_partite)):
         
         #definisco la classe giocatore, mazzo (che viene anche mischiato), tavolo
         giocatore = Giocatore()  
@@ -238,11 +237,11 @@ def calcola_probabilità_vittoria(numero_partite):
         
         #inizio a giocare
         carta_in = mazzo.prima_carta()    
-        while not mazzo.vuoto():
+        while not carta_in == None:
             carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
         
         #controllo se ho vinto o perso, e aumento il contatore di conseguenza    
-        if (giocatore.vinto(tavolo, righe) == True):
+        if giocatore.vinto(tavolo, righe): 
            partite_vinte += 1 
            
     return partite_vinte
@@ -251,9 +250,8 @@ def calcola_probabilità_vittoria(numero_partite):
 def gioca_partita(args):
     
     #definisco i path da utilizzare per l'importazione di un mazzo singolo
-    load_test_path = args.test + 'Text_Test_Files/mazzo1_sbagliato.txt'    
-    combination_test_path = args.test + '/righe1_vittoria.json'  
-    #a="C:/Users/leona/OneDrive/Documenti/pyprogram/solitario4re/Custom_Test_Cases/Text_Test_Files/mazzo1_vittoria.txt"
+    load_test_path = args.test + 'Text_Test_Files/mazzo1_sconfitta.txt'    
+    combination_test_path = args.test + '/righe1_sconfitta.json'  
     partita_vinta = False
     
     mazzo = Mazzo()
@@ -278,7 +276,7 @@ def gioca_partita(args):
         righe = json.load(combinazioni_delle_righe)
     
     carta_in = mazzo.prima_carta()    
-    while not mazzo.vuoto():
+    while not carta_in == None:
         carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)    
         
     if giocatore.vinto(tavolo, righe):
@@ -318,24 +316,29 @@ start = time.perf_counter()
 
 
 #Di default voglio fare una sola partita con un mazzo importato; altrimenti posso fare il calcolo della probabilità
-if args.modalità != 'Partita Singola':
-   
-    numero_partite = 100000
+if args.modalità != 'Partita Singol':
+    
+    #P = []
+    
+    #for _ in tqdm(range(300)):
+        
+    numero_partite = 10000
     
     partite_vinte = calcola_probabilità_vittoria(numero_partite)
     #calcolo la probabilità di vittoria
     probabilità_vittoria=partite_vinte/numero_partite
+    #P.append(probabilità_vittoria)
     
     print('\n\nPartite Giocate:', numero_partite)
     print('\nPartite Vinte:  ',partite_vinte)
     print('\nProbabilità Vittoria:  ',probabilità_vittoria)
     
     #grafico l'andamento della probabilità    
-    #plt.plot(probabilità_vittoria) 
+    #plt.plot(P) 
     
 else:
     
-    vittoria=gioca_partita(args)
+    vittoria = gioca_partita(args)
 
     
 elapsed = time.perf_counter() - start       
