@@ -120,13 +120,21 @@ class Mazzo:
     
 #------------------------------------------------------------------------------------------------------------------------#    
      
-class Strategia:
+class Strategy(ABC):
     
-    def __init__():
+    '''interface class'''
+    
+    @abstractmethod
+    def stabilisci_seme():
         pass
     
     
-    def stabilisci_seme_per_riga():
+      
+    
+class SemePerRigaCasuale(Strategy):
+    
+    
+    def stabilisci_seme():
         
         '''Viene stabilita una corrispondenza casuale seme-riga per il posizionamento delle carte.'''
         
@@ -143,7 +151,9 @@ class Strategia:
         return righe 
     
     
-    def seme_prefissato():
+class SemePerRigaPrefissato(Strategy):
+    
+    def stabilisci_seme():
         
         '''Viene stabilita una corrispondenza fissa seme-riga per il posizionamento delle carte.'''
         
@@ -233,7 +243,8 @@ def calcola_probabilità_vittoria(numero_partite):
     
         #sistemo le carte sul tavolo e genero le corrispondenze riga-seme
         tavolo.disponi_carte(mazzo)
-        righe = Strategia.stabilisci_seme_per_riga()
+        #righe=SemePerRigaPrefissato.stabilisci_seme()
+        righe = SemePerRigaCasuale.stabilisci_seme()
         
         #inizio a giocare
         carta_in = mazzo.prima_carta()    
@@ -303,7 +314,7 @@ def gioca_partita(args):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-i1", "--modalità", help = "Modalità di esecuzione",
-                type = str, default = 'Partita Singola')
+                type = str, default = 'Partita Singol')
 
 parser.add_argument("-i2", "--test", help = "Directory dei Casi di Test",
                 type = str, default = "./Custom_Test_Cases/")
@@ -316,13 +327,13 @@ start = time.perf_counter()
 
 
 #Di default voglio fare una sola partita con un mazzo importato; altrimenti posso fare il calcolo della probabilità
-if args.modalità != 'Partita Singol':
+if args.modalità != 'Partita Singola':
     
     #P = []
     
     #for _ in tqdm(range(300)):
         
-    numero_partite = 10000
+    numero_partite = 100000
     
     partite_vinte = calcola_probabilità_vittoria(numero_partite)
     #calcolo la probabilità di vittoria
