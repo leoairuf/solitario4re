@@ -13,6 +13,8 @@ import json
 from tqdm import tqdm
 from sys import exit
 from abc import ABC, abstractmethod
+import statistics as stat
+import math
 
 #------------------------------------------------------------------------------------------------------------------------#
 
@@ -230,7 +232,7 @@ class TavoloDaGioco:
 
 def calcola_probabilità_vittoria(numero_partite):
     partite_vinte = 0 
-    for partita in tqdm(range(numero_partite)):
+    for partita in range(numero_partite):
         
         #definisco la classe giocatore, mazzo (che viene anche mischiato), tavolo
         giocatore = Giocatore()  
@@ -261,8 +263,8 @@ def calcola_probabilità_vittoria(numero_partite):
 def gioca_partita(args):
     
     #definisco i path da utilizzare per l'importazione di un mazzo singolo
-    load_test_path = args.test + 'Text_Test_Files/mazzo1_sconfitta.txt'    
-    combination_test_path = args.test + '/righe1_sconfitta.json'  
+    load_test_path = args.mazzo   
+    combination_test_path = args.righe 
     partita_vinta = False
     
     mazzo = Mazzo()
@@ -313,11 +315,17 @@ def gioca_partita(args):
 #dichiarazione degli arguments
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-i1", "--modalità", help = "Modalità di esecuzione",
-                type = str, default = 'Partita Singol')
+parser.add_argument("-i1", "--PSingola", help = "Modalità di esecuzione",
+                type = bool, default = True)
 
 parser.add_argument("-i2", "--test", help = "Directory dei Casi di Test",
                 type = str, default = "./Custom_Test_Cases/")
+
+parser.add_argument("-i3", "--mazzo", help = "Mazzo di Test",
+                type = str, default = "./Custom_Test_Cases/Text_Test_Files/mazzo1_sbagliato.txt")
+
+parser.add_argument("-i4", "--righe", help = "File Righe-Semi",
+                type = str, default = "./Custom_Test_Cases/righe1_vittoria.txt")
 
 args = parser.parse_args()
 
@@ -327,31 +335,43 @@ start = time.perf_counter()
 
 
 #Di default voglio fare una sola partita con un mazzo importato; altrimenti posso fare il calcolo della probabilità
-if args.modalità != 'Partita Singola':
+if args.PSingola:
     
-    #P = []
+    Psim = []
+    numero_partite = 1000
     
-    #for _ in tqdm(range(300)):
+    for ciclo in tqdm(range(1000)):
         
-    numero_partite = 100000
-    
-    partite_vinte = calcola_probabilità_vittoria(numero_partite)
-    #calcolo la probabilità di vittoria
-    probabilità_vittoria=partite_vinte/numero_partite
-    #P.append(probabilità_vittoria)
-    
-    print('\n\nPartite Giocate:', numero_partite)
-    print('\nPartite Vinte:  ',partite_vinte)
-    print('\nProbabilità Vittoria:  ',probabilità_vittoria)
-    
-    #grafico l'andamento della probabilità    
-    #plt.plot(P) 
+        partite_vinte = calcola_probabilità_vittoria(numero_partite)
+        
+        #calcolo la probabilità di vittoria
+        probabilità_vittoria=partite_vinte/numero_partite
+        
+        Psim.append(probabilità_vittoria)
     
 else:
     
     vittoria = gioca_partita(args)
 
-    
+
+media = stat.mean(Psim)
+# mediana = stat.median(Psim)
+# varianza = stat.variance(Psim)
+std = stat.stdev(Psim)
+
+
+e = (1.96*std)/(math.sqrt(1000))
+
+
+estremo_sx = media - e
+estremo_dx = media + e
+
+
+print(f'\n\nProbabilità Media di Vittoria su {numero_partite} Partite:  ', media)
+print(f'\nIntervallo di Confidenza: ({estremo_sx},{estremo_dx})')    
+
+
 elapsed = time.perf_counter() - start       
+
 
 print('\nTempo di Esecuzione:  ', elapsed)
