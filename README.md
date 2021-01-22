@@ -6,33 +6,32 @@ Il programma potrà svolgere due tipi di attività, a seconda dell'opzione speci
 Input da terminale: --psingola 'True': se si vuole fare una partita singola.  
                     --psingola 'False': (impostato di default) se si vuole calcolare la probabilità di vittoria. 
 
+
 -La prima attività prevede lo svolgimento di una partita utilizzando un mazzo importato da un file di testo, preceduto dalla verifica dell'integrità del mazzo e 
- della correttezza di seme e valore della singola carta. le righe del file che non rispettano la sintassi fornita dalla specifica vengono ignorate dal codice (Valore,Seme).
- Un mazzo verrà considerato nullo se, dopo il controllo successivo all'importazione del file di testo, non contenie le 40 carte previste dal regolamento.
+ della correttezza di seme e valore della singola carta. Le righe del file che non rispettano la sintassi fornita dalla specifica (Valore,Seme) vengono ignorate dal codice.
+ Un mazzo verrà considerato nullo se, dopo il controllo successivo all'importazione del file di testo, non contiene le 40 carte previste dal regolamento.
   
-  Ad esempio, viene fornito il seguente mazzo: 
+ Ad esempio, viene fornito il seguente mazzo: 
 
   -1,3
+  
   -4,D
+  
   -8,ohjhk
+  
   -//commento. 
 
-  L'insieme di carte utilizzabili contiene solo il 4 di denara. Il programma verrà interrotto per invalidità del mazzo fornito.
-  L'utente può selezionare in input da terminale il path del file contenente il mazzo specificando: --psingola 'True' --mazzo 'path del file'
+ L'insieme di carte utilizzabili contiene solo il 4 di denara. Il programma verrà interrotto per invalidità del mazzo fornito.
+ L'utente può selezionare in input da terminale il path del file contenente il mazzo specificando: --psingola 'True' --mazzo 'path del file'.
 
 
--La seconda attività prevede il calcolo della probabilità di vittoria nel solitario dei 4 re. Di default vengono giocate 1000 per 100 volte al fine di calcolare
- la la probabilità di vittoria media con il relativo intervallo di confidenza.
+-La seconda attività prevede il calcolo della probabilità di vittoria nel solitario dei 4 re. Di default vengono giocate 1000 partite per 100 volte al fine di calcolare
+ la probabilità di vittoria media con il relativo intervallo di confidenza.
 
  
- 
-Sono presenti 8 casi di test, divisi in 3 casi vincenti, 3 casi perdenti, 1 caso di mazzo contenente errori ma comunque utilizzabile
-e 1 caso di mazzo contenente errori ma non utilizzabile in quanto non completo. La corrispondenza seme-riga è fissa e uguale per ogni caso.
-I casi di test sono posizionati nella cartella Custom_Test_Cases.
-
-
-
-L'insieme di carte utilizzabili contiene solo il 4 di denara. Il programma verrà interrotto per invalidità del mazzo fornito.
+ Sono presenti 8 casi di test, divisi in 3 casi vincenti, 3 casi perdenti, 1 caso di mazzo contenente errori ma comunque utilizzabile
+ e 1 caso di mazzo contenente errori ma non utilizzabile in quanto non completo. La corrispondenza seme-riga è fissa e uguale per ogni caso.
+ I casi di test sono posizionati nella cartella Custom_Test_Cases.
 
 
 -Nella cartella Results si possono trovare informazioni di carattere generale relative al codice: i 4 file di testo presenti contengono informazioni riguardanti alcune 
