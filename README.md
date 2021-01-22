@@ -38,15 +38,22 @@ L'insieme di carte utilizzabili contiene solo il 4 di denara. Il programma verr�
  simulazioni condotte, mentre i 3 file PNG sono grafici ottenuti con i dati delle simulazioni.
 
 SIMULAZIONI CONDOTTE:
+
 -Dati_Simulazione_Probabilità_NoIncremento --> 1000 simulazioni da 50000 partite ciascuna: viene calcolata la probabilità di vittoria per ogni ciclo.
+
 -Simulazione_Prob_Incrementata --> 10000 simulazioni da 100 + K x 50 partite (K = 1,2...10000): partendo da una prima simulazione da 100 partite, viene calcolata la probabilità
  di vittoria e poi incrementato il numero di partire del ciclo successivo di 50.
+
 -Simulazione_Tempi_LISTE --> 1000 simulazioni da 1000 partite utilizzando le liste: viene calcolato il tempo di esecuzione per ogni ciclo.
+
 -Simulazione_Tempi_NP --> 1000 simulazioni da 1000 partite utilizzando Numpy: viene calcolato il tempo di esecuzione per ogni ciclo. 
 	 
 GRAFICI OTTENUTI:
+
 -Convergenza --> grafico ottenuto dai dati contenuti in Dati_Simulazione_Probabilità_NoIncremento.
+
 -Convergenza_Incremento --> grafico ottenuto dai dati contenuti in Simulazione_Prob_Incrementata.
+
 -ParagoneNPL --> grafico che confronta i dati ottenuti da Simulazione_Tempi_LISTE e Simulazione_Tempi_NP. (i tempi sono calcolati in secondi) 
 
  
