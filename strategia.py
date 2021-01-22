@@ -7,6 +7,8 @@ Created on Fri Jan 22 15:11:43 2021
 from abc import ABC, abstractmethod
 import random
 
+#----------------------------------------------------------------------------------------------------------------------------------------------#
+
 class Strategy(ABC):
     
     '''interface class'''
@@ -16,7 +18,7 @@ class Strategy(ABC):
         pass
     
     
-      
+    
     
 class SemePerRigaCasuale(Strategy):
     
@@ -36,6 +38,8 @@ class SemePerRigaCasuale(Strategy):
             indici.pop(r)
             
         return righe 
+
+
     
     
 class SemePerRigaPrefissato(Strategy):
@@ -55,6 +59,8 @@ class SemePerRigaPrefissato(Strategy):
         return righe 
 
 
+
+
 class SemePerRigaDinamico(Strategy):
     
     '''Viene stabilita una corrispondenza seme-riga in modo dinamico'''
@@ -62,8 +68,8 @@ class SemePerRigaDinamico(Strategy):
     def stabilisci_seme(cont,carta_in,righe):
          
         if carta_in.seme not in righe:
-            righe[carta_in.seme]=cont
-            cont+=1
+            righe[carta_in.seme] = cont
+            cont += 1
                                    
-        return righe,cont
+        return righe, cont
         

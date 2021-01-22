@@ -8,10 +8,10 @@ Created on Fri Jan 22 15:21:30 2021
 from mazzo import Mazzo
 from giocatore import Giocatore
 from tavolo import TavoloDaGioco
-from strategia import SemePerRigaDinamico,SemePerRigaPrefissato
+from strategia import SemePerRigaDinamico, SemePerRigaPrefissato
 from sys import exit
 
-
+#----------------------------------------------------------------------------------------------------------------------------------------------#
 
 def calcola_probabilità_vittoria(numero_partite):
     partite_vinte = 0 
@@ -24,20 +24,20 @@ def calcola_probabilità_vittoria(numero_partite):
         mazzo.genera_mazzo_ordinato()
         mazzo.mischia()
         
-        tavolo=TavoloDaGioco(tavolo=[])
+        tavolo = TavoloDaGioco(tavolo = [])
     
         #sistemo le carte sul tavolo e genero le corrispondenze riga-seme
         tavolo.disponi_carte(mazzo)
+        
         #righe=SemePerRigaPrefissato.stabilisci_seme()
         #righe = SemePerRigaCasuale.stabilisci_seme()
         
         #inizio a giocare
-          
         righe={}
         cont=0
         carta_in = mazzo.prima_carta()
         while not carta_in == None:
-            righe,cont=SemePerRigaDinamico.stabilisci_seme(cont, carta_in, righe)
+            righe, cont = SemePerRigaDinamico.stabilisci_seme(cont, carta_in, righe)
             carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)
         
         #controllo se ho vinto o perso, e aumento il contatore di conseguenza    
@@ -46,6 +46,7 @@ def calcola_probabilità_vittoria(numero_partite):
            
     return partite_vinte
     
+#----------------------------------------------------------------------------------------------------------------------------------------------#
     
 def gioca_partita(args):
     
@@ -62,18 +63,18 @@ def gioca_partita(args):
     
     print('\nMazzo caricato: ')
     for carta in mazzo.lista_carte:
-        print(carta.valore,carta.seme)
+        print(carta.valore, carta.seme)
     
     # with open(load_test_path, 'rb') as apri_mazzo_di_test:
     #     mazzo_importato_di_prova = pickle.load(apri_mazzo_di_test)
     
     giocatore = Giocatore()
     
-    tavolo = TavoloDaGioco(tavolo=[]) 
+    tavolo = TavoloDaGioco(tavolo = []) 
     
     tavolo.disponi_carte(mazzo) 
     
-    righe=SemePerRigaPrefissato.stabilisci_seme()
+    righe = SemePerRigaPrefissato.stabilisci_seme()
     carta_in = mazzo.prima_carta()  
     while not carta_in == None:
         carta_in = tavolo.sostituisci_carta(carta_in, mazzo, tavolo, righe)    
@@ -92,6 +93,6 @@ def gioca_partita(args):
         print(f'\n  riga {cont}')
         cont+=1
         for carta in riga:
-            print(carta.valore,carta.seme,carta.coperta)
+            print(carta.valore, carta.seme, carta.coperta)
     
     return partita_vinta

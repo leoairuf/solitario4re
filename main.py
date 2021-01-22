@@ -12,7 +12,7 @@ import statistics as stat
 import math
 import solitario
 
-#------------------------------------------------------------------------------------------------------------------------#
+#----------------------------------------------------------------------------------------------------------------------------------------------#
 
 #dichiarazione degli arguments
 parser = argparse.ArgumentParser()
@@ -24,7 +24,6 @@ parser.add_argument("-i1", "--psingola", help = "Modalità di esecuzione",
 parser.add_argument("-i3", "--mazzo", help = "Mazzo di Test",
                 type = str, default = "./Custom_Test_Cases/mazzo1_errori.txt")
 
-
 args = parser.parse_args()
 
 
@@ -33,7 +32,7 @@ start = time.perf_counter()
 
 
 #Di default voglio fare una sola partita con un mazzo importato; altrimenti posso fare il calcolo della probabilità
-if args.psingola=='False':
+if args.psingola == 'False':
     
     Psim = []
     numero_partite = 100
@@ -43,7 +42,7 @@ if args.psingola=='False':
         partite_vinte = solitario.calcola_probabilità_vittoria(numero_partite)
         
         #calcolo la probabilità di vittoria
-        probabilità_vittoria=partite_vinte/numero_partite
+        probabilità_vittoria = partite_vinte/numero_partite
         
         Psim.append(probabilità_vittoria)
     
@@ -60,7 +59,6 @@ if args.psingola=='False':
 else:
     
     vittoria = solitario.gioca_partita(args)
-
 
 
 elapsed = time.perf_counter() - start       

@@ -7,12 +7,14 @@ Created on Fri Jan 22 15:15:27 2021
 
 from tavolo import TavoloDaGioco
 
+#-----------------------------------------------------------------------------------------------------------------------------------------------#
 
 class Giocatore:
     
     
     def __init__(self, vittoria = True):
         self.vittoria = vittoria
+    
     
     def vinto(self, tavolo, righe):
         
@@ -21,7 +23,7 @@ class Giocatore:
         #check se ogni carta è posizionata correttamente
         for k, riga in enumerate(tavolo.tavolo):
             for i, carta in enumerate(riga):
-                if k != righe[carta.seme] or carta.valore != i + 1 :
+                if righe[carta.seme] != k or carta.valore != i + 1 :
                     self.vittoria = False
                     
         return self.vittoria            

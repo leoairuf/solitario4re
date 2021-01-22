@@ -8,11 +8,13 @@ Created on Fri Jan 22 15:02:25 2021
 from carta import Carta
 import random
 
+#----------------------------------------------------------------------------------------------------------------------------------------------#
+
 class Mazzo:
     
     
-    def __init__(self,lista_carte=[]):
-        self.lista_carte=lista_carte
+    def __init__(self, lista_carte = []):
+        self.lista_carte = lista_carte
         
         
     def carica_mazzo(self,path):
@@ -23,20 +25,20 @@ class Mazzo:
         
         #lettura file di testo
         with open(path,'r') as infile:
-            contenuto=infile.readlines()
+            contenuto = infile.readlines()
             for elem in contenuto:
-                carta=Carta()
+                carta = Carta()
                 
                 #check se la riga può diventare una carta
                 if carta.is_carta(elem):
-                    flag=True
+                    flag = True
                     for i in self.lista_carte:
-                        if i.valore == carta.valore and i.seme==carta.seme:
-                            flag=False
+                        if i.valore == carta.valore and i.seme == carta.seme:
+                            flag = False
                     
                     #se la carta è buona e non duplicata, la includo nel mazzo    
-                    if flag==True:
-                        self.lista_carte.append(carta)#Carta(elem[1],elem[0])) 
+                    if flag == True:
+                        self.lista_carte.append(carta) #Carta(elem[1],elem[0])) 
             
         #comunicazione all'utente sulla natura del mazzo                
         if len(self.lista_carte) != 40:
@@ -68,10 +70,10 @@ class Mazzo:
         
         '''Viene pescata la prima carta dal mazzo.'''
         
-        if len(self.lista_carte)!=0:
+        if len(self.lista_carte) != 0:
             prima_carta=self.lista_carte.pop(-1)
         else:
-            prima_carta=None
+            prima_carta = None
         
         return prima_carta
     
