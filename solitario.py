@@ -60,6 +60,9 @@ def gioca_partita(args):
        print('\nNon posso giocare con un mazzo non valido')
        exit()
     
+    print('\nMazzo caricato: ')
+    for carta in mazzo.lista_carte:
+        print(carta.valore,carta.seme)
     
     # with open(load_test_path, 'rb') as apri_mazzo_di_test:
     #     mazzo_importato_di_prova = pickle.load(apri_mazzo_di_test)
@@ -77,13 +80,13 @@ def gioca_partita(args):
         
     if giocatore.vinto(tavolo, righe):
         partita_vinta = True
-        print('partita vinta !!')
+        print('\n\npartita vinta !!')
     else:
-        print('partita persa !!')
+        print('\n\npartita persa !!')
         
         
     #stampo la configurazione del tavolo per il controllo dell'utente   
-    print('\nconfigurazione tavolo a partita conclusa: ')
+    print('\n\n\nconfigurazione tavolo a partita conclusa: ')
     cont=1
     for riga in tavolo.tavolo:
         print(f'\n  riga {cont}')
