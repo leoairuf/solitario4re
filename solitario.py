@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 22 15:21:30 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
 
 from mazzo import Mazzo
@@ -88,20 +88,15 @@ class Solitario:
         else:
             print('\n\npartita persa !!')
             
-            
-        #stampo la configurazione del tavolo per il controllo dell'utente   
-        print('\n\n\nconfigurazione tavolo a partita conclusa: ')
-        cont=1
-        for riga in tavolo.tavolo:
-            print(f'\n  riga {cont}')
-            cont+=1
-            for carta in riga:
-                print(carta.valore, carta.seme, carta.coperta)
+        tavolo.stampa_tavolo()    
         
         return partita_vinta
     
+#---------------------------------------------------------------------------------------------------------------------------------------------#    
     
     def CreaStatistiche(Psim,numero_partite):
+        
+        '''Vengono elaborati i dati relativi alle simulazioni e calcolati gli intervalli di confidenza.'''
         
         media = stat.mean(Psim)
         std = stat.stdev(Psim)

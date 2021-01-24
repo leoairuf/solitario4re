@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 22 15:11:43 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
 from abc import ABC, abstractmethod
 import random

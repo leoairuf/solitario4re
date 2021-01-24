@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 22 15:18:56 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
 
 class TavoloDaGioco:
@@ -40,3 +40,16 @@ class TavoloDaGioco:
                 carta = mazzo.prima_carta()
                 riga.append(carta)
             self.tavolo.append(riga)
+            
+            
+    def stampa_tavolo(self):
+        
+        '''Viene stampata la configurazione del tavolo a fine partita per il controllo dell'utente.'''
+          
+        print('\n\n\nconfigurazione tavolo a partita conclusa: ')
+        cont=1
+        for riga in self.tavolo:
+            print(f'\n  riga {cont}')
+            cont += 1
+            for carta in riga:
+                print(carta.valore, carta.seme, carta.coperta)

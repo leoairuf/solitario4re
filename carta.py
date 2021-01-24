@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 22 14:58:21 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
 
 class Carta:

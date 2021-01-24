@@ -46,6 +46,7 @@ if args.psingola == 'False':
     Solitario.CreaStatistiche(Psim,numero_partite)
    
 else:
+    
     vittoria = Solitario.gioca_partita(args)
 
 

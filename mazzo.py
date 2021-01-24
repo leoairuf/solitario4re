@@ -2,7 +2,7 @@
 """
 Created on Fri Jan 22 15:02:25 2021
 
-@author: leona
+@author: Leonardo Furia - Lorenzo Marcoccia
 """
 
 from carta import Carta
